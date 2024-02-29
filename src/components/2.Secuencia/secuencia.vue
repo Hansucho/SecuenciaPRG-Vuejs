@@ -1,5 +1,12 @@
 <template>
+  
     <div>
+      <div>
+    <button v-if="!counting" @click="startCountdown">Empezar</button>
+    <div v-if="counting">
+      <p>Te quedan: {{ countdown }} segundos</p>
+    </div>
+  </div>
       <h2>Completa la secuencia: </h2>
       <div>
         <button v-for="num in sequence" :key="num"  class="secuencia-button">
@@ -7,6 +14,7 @@
         </button>
       </div>
       <div>
+        Elige la opción correcta: <br>
         <button  class="option-button" v-for="option in options" :key="option" @click="checkOption(option)" >
           {{ option }}
         </button>
@@ -23,17 +31,48 @@
   export default {
     data() {
       return {
-        sequence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-        hiddenNumber: null,
-        options: [],
-        Resultado:'' // Opciones aleatorias
+        sequence: [],// aqui debemos de dejar vacio, para que solamente muestre los 7 números
+        hiddenNumber: null, //Numero Escondido
+        options: [], //Vecor par aalmacnera los números aleotorios 
+        Resultado:'', // Opciones aleatorias
+        counting:false,
+        countdown:10
       };
     },
     mounted() {
+      //Llenamos nuestra secuencia con los números del 1 al 9
+      for(let numeros = 1 ; numeros<=9; numeros++){
+        this.sequence.push(numeros);
+      }
+
+      //Seleccionar aleatoriamente 7 números de la secuencia
+      this.sequence = this.sequence.sort(() => Math.random() - 0.5).slice(0, 7);
+
+      //al momento que se monte el componente, realizamos la opcion aleatorio de nuestra secuencia con el número escondido 
       this.hiddenNumber = this.sequence[Math.floor(Math.random() * this.sequence.length)];
       this.generateOptions();
     },
     methods: {
+
+      startCountdown() {
+      this.generateSequence(); // Generar una nueva secuencia con un nuevo número oculto
+      this.counting = true;
+      let timer = setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+        } else {
+          clearInterval(timer);
+          this.counting = false;
+          this.countdown = 10; // Reiniciar la cuenta regresiva
+        }
+      }, 1000);
+    },
+    
+    generateSequence() {
+      this.sequence = []; // Limpiar la secuencia actual
+      this.options = []; // Limpiar las opciones actuales
+      this.generateOptions();
+    },
       generateOptions() {
         // Generar opciones aleatorias basadas en la secuencia, excluyendo el número oculto
         this.options = this.sequence.filter(num => num !== this.hiddenNumber).slice(0, 2); // Por ejemplo, mostraremos solo dos opciones
@@ -41,6 +80,13 @@
         this.shuffleArray(this.options); // Mezclar las opciones
       },
       checkOption(option) {
+        if (this.counting) {
+        clearInterval(this.timer); // Detener el temporizador si todavía está corriendo
+        this.counting = false;
+      }
+
+
+        //Funcion para checkar nuestro resultado
         if (option === this.hiddenNumber) {
           console.log('¡Correcto! El número oculto era:', this.hiddenNumber);
           this.Resultado="¡Correcto! El número oculto era:" + this.hiddenNumber
