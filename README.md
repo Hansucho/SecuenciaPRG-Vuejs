@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ejerciciosecuencia-web
 
 ## Project setup
@@ -17,3 +18,7 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# SecuenciaPRG-Vuejs
+Descripcion del proyecto PRG- Secuencia Vuejs
+>>>>>>> cd4d81cd2c30aac500ac96de873675125e812ba2
