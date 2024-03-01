@@ -2,7 +2,7 @@
   
     <div>
       <div>
-    <button v-if="!counting" @click="startCountdown">Empezar</button>
+        <button v-if="!counting" @click="startCountdown">Empezar</button>
     <p v-if="intentos > 0">Intentos restantes: {{ intentos }}</p>
     <p v-else>No quedan intentos.</p>
     <div v-if="counting">
@@ -15,11 +15,14 @@
           {{ num === hiddenNumber ? '?' : num }}
         </button>
       </div>
-      <div>
+      <div v-if="counting">
+        <div>
         Elige la opción correcta: <br>
         <button  class="option-button" v-for="option in options" :key="option" @click="checkOption(option)" >
           {{ option }}
         </button>
+      </div>
+     
       </div>
       <div>
         <span>
@@ -29,6 +32,7 @@
            Score: {{ percentageScore }} %
         </span>
       </div>
+     
   
     
     </div>
@@ -82,7 +86,7 @@
             this.countdown = 10;
             //this.intentos--;
             this.Resultado = "¡Tiempo! El número oculto era:" + this.hiddenNumber;
-            this.CalcularPuntuaje();
+            //this.CalcularPuntuaje();
           }
         }, 1000);
         }
@@ -112,6 +116,7 @@
           clearInterval(this.timer);
           this.counting = false;
         }
+        this.selectedOption = option;
         if (option === this.hiddenNumber) {
           //console.log('¡Correcto! El número oculto era:', this.hiddenNumber);
           this.Resultado = "¡Correcto! El número oculto era:" + this.hiddenNumber;
@@ -131,8 +136,9 @@
         }
       },
       CalcularPuntuaje(){
-        console.log(this.puntuaje);
+        console.log(this.puntuaje + "reultado");
         this.puntuaje = ((this.puntuaje / 5) * 100); // Calcula el puntaje como un porcentaje
+        console.log(this.puntuaje + "reultado");
       },
 
     },
