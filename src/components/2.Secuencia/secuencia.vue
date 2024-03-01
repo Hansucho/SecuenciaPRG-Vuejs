@@ -1,15 +1,79 @@
 <template>
-  
+
     <div>
-      <div>
-        <button v-if="!counting" @click="startCountdown">Empezar</button>
-    <p v-if="intentos > 0">Intentos restantes: {{ intentos }}</p>
-    <p v-else>No quedan intentos.</p>
-    <div v-if="counting">
-      <p>Te quedan: {{ countdown }} segundos</p>
-    </div>
-  </div>
-      <h2>Completa la secuencia: </h2>
+      <!--Componente del boton de iniciar juego-->
+      <boton-iniciar 
+      :counting="!counting"
+      :texto="textoBoton"
+      @Iniciar="startCountdown"
+      :intentos="intentos"
+      :countdown="countdown"
+      />
+      
+        <!--
+          <div>
+       <button v-if="!counting" @click="startCountdown">Empezar</button>
+       <p v-if="intentos > 0">Intentos restantes: {{ intentos }}</p>
+      <p v-else>No quedan intentos.</p>
+      <div v-if="counting">
+        <p>Te quedan: {{ countdown }} segundos</p>
+      </div>
+      </div>
+        -->
+    
+   <!--Componente del boton de iniciar juego-->
+          <template>
+            <v-card
+              :loading="loading"
+              class="mx-auto my-12"
+              max-width="374"
+            >
+            <v-card-title>Completa la secuencia: </v-card-title>
+            <v-divider class="mx-4"></v-divider>
+            <v-card-text>
+              <button v-for="num in sequence" :key="num"  class="secuencia-button">
+          {{ num === hiddenNumber ? '?' : num }}
+        </button>
+        <v-divider class="mx-4"></v-divider>
+        <div class="text-center">
+        Elige la opción correcta: <br>
+        <button  class="option-button" v-for="option in options" :key="option" @click="checkOption(option)" >
+          {{ option }}
+        </button>
+      </div>
+      <v-divider class="mx-4"></v-divider>
+      <div class="text-center">
+        <span>
+            {{ Resultado }}
+        </span> <br>
+        <span>
+           Score: {{ percentageScore }} %
+        </span>
+        <v-divider class="mx-4"></v-divider>
+      <div class="text-center">
+
+           
+              <v-rating
+                :value="puntuaje"
+                color="green"
+                dense
+                
+                readonly
+                size="14"
+              ></v-rating>
+
+              <div class="grey--text ms-4">
+               Puntuación
+              </div>
+              
+
+          </div>
+      </div>
+            </v-card-text>
+          </v-card>
+          </template>
+          <!--
+            <h2>Completa la secuencia: </h2>
       <div>
         <button v-for="num in sequence" :key="num"  class="secuencia-button">
           {{ num === hiddenNumber ? '?' : num }}
@@ -32,6 +96,8 @@
            Score: {{ percentageScore }} %
         </span>
       </div>
+          -->
+      
      
   
     
@@ -39,9 +105,15 @@
   </template>
   
   <script>
+  import BotonIniciar from '../2.Secuencia/IniciarBoton.vue'
   export default {
+    components: {
+      BotonIniciar,
+
+  },
     data() {
       return {
+        textoBoton: 'Empezar',
         sequence: [],
         hiddenNumber: null,
         options: [],
@@ -57,6 +129,7 @@
       this.generateSequence();
     },
     methods: {
+
       startCountdown() {
        // Detener el temporizador existente si está en funcionamiento
         if (this.timer) {
