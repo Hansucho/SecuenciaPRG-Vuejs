@@ -24,6 +24,9 @@
       <div>
         <span>
             {{ Resultado }}
+        </span> <br>
+        <span>
+           Score: {{ percentageScore }} %
         </span>
       </div>
   
@@ -39,10 +42,11 @@
         hiddenNumber: null,
         options: [],
         Resultado: '',
-        intentos:2,
+        intentos:5,
         counting: false,
         countdown: 10,
-        timer: null // Declarar timer como una propiedad de datos
+        timer: null, // Declarar timer como una propiedad de datos;
+        puntuaje:0,
       };
     },
     mounted() {
@@ -55,7 +59,7 @@
           clearInterval(this.timer);
           this.timer = null;
         }
-        
+        //this.CalcularPuntuaje();
         //Aqui si los intentos son mayoires a 0 que empiece a generar una nueva secuencia y empiece el conteo
         if(this.intentos>0)
         {
@@ -66,6 +70,7 @@
         this.Resultado = ''; //reiniciamos el valor de nuestro resultado cuando le damos click
         this.generateSequence(); //genberamos una nueva secuencia
         this.counting = true;
+        //this.puntuaje = 0; // Reinicia el puntaje al inicio del juego
      
         this.timer = setInterval(() => {
           if ((this.countdown > 0) && (this.intentos>=0)) {
@@ -77,6 +82,7 @@
             this.countdown = 10;
             //this.intentos--;
             this.Resultado = "¡Tiempo! El número oculto era:" + this.hiddenNumber;
+            this.CalcularPuntuaje();
           }
         }, 1000);
         }
@@ -93,7 +99,6 @@
         this.sequence = this.sequence.sort(() => Math.random() - 0.5).slice(0, 8);
         this.hiddenNumber = this.sequence[Math.floor(Math.random() * this.sequence.length)];
         this.generateOptions();
-        //this.intentos = 5; // Establecer intentos al inicio del juego
       },
       generateOptions() {
         this.options = this.sequence.filter(num => num !== this.hiddenNumber).slice(0, 2);
@@ -110,17 +115,39 @@
         if (option === this.hiddenNumber) {
           //console.log('¡Correcto! El número oculto era:', this.hiddenNumber);
           this.Resultado = "¡Correcto! El número oculto era:" + this.hiddenNumber;
+          this.puntuaje++;
         } else {
           //this.intentos--;
           //console.log('Incorrecto. Inténtalo de nuevo.');
           this.Resultado = "Incorrecto El número oculto era:" + this.hiddenNumber;
         }
+        //this.CalcularPuntuaje();
         //this.intentos--; // Decrementar intentos
       },
       shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [array[i], array[j]] = [array[j], array[i]];
+        }
+      },
+      CalcularPuntuaje(){
+        console.log(this.puntuaje);
+        this.puntuaje = ((this.puntuaje / 5) * 100); // Calcula el puntaje como un porcentaje
+      },
+
+    },
+    computed: {
+      // Calcula el puntaje como un porcentaje
+      percentageScore() {
+        if (this.puntuaje === 0 & this.intentos === 0) {
+          // cuando se inicia el juego tiene valor de 0
+          return 0;
+        }
+        if (this.puntuaje===100 & this.intentos === 0){
+          return 100;
+        }
+         else {
+          return (this.puntuaje / 5) * 100; // 5 es el número total de intentos
         }
       }
     }
@@ -154,5 +181,13 @@
 }
 .option-button:hover {
   transform: scale(1.1);
+}
+/* clases para mostrar el valor correcto y el falso*/
+.numero-verde {
+  color: green;
+}
+
+.numero-rojo {
+  color: red;
 }
 </style>
