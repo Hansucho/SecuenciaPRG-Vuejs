@@ -8,8 +8,8 @@
 import Secuencia from  '../src/components/2.Secuencia/secuencia.vue'
 export default {
   components:{
-    Secuencia
-  },
+    Secuencia,
+      },
   name: 'App',
   data: () => ({
     //
