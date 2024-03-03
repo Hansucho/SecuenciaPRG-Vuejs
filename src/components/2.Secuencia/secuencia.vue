@@ -21,10 +21,12 @@
       </div>
         -->
     
-   <!--Componente del boton de iniciar juego-->
+   <!--Componente del boton de iniciar juego 
+   :loading="loading"
+  -->
           <template>
             <v-card
-              :loading="loading"
+             
               class="mx-auto my-12"
               max-width="374"
             >
@@ -140,9 +142,9 @@
         //Aqui si los intentos son mayoires a 0 que empiece a generar una nueva secuencia y empiece el conteo
         if(this.intentos>0)
         {
-        console.log(this.intentos)
+        //console.log(this.intentos)
         this.intentos--;
-        console.log(this.intentos)
+        //console.log(this.intentos)
         this.countdown = 10;
         this.Resultado = ''; //reiniciamos el valor de nuestro resultado cuando le damos click
         this.generateSequence(); //genberamos una nueva secuencia
@@ -209,9 +211,8 @@
         }
       },
       CalcularPuntuaje(){
-        console.log(this.puntuaje + "reultado");
         this.puntuaje = ((this.puntuaje / 5) * 100); // Calcula el puntaje como un porcentaje
-        console.log(this.puntuaje + "reultado");
+        //console.log(this.puntuaje + "resultado");
       },
 
     },
