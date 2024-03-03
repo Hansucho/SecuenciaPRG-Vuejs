@@ -1,14 +1,7 @@
 <template>
 
     <div>
-      <!--Componente del boton de iniciar juego-->
-      <boton-iniciar 
-      :counting="!counting"
-      :texto="textoBoton"
-      @Iniciar="startCountdown"
-      :intentos="intentos"
-      :countdown="countdown"
-      />
+  
       
         <!--
           <div>
@@ -28,14 +21,27 @@
             <v-card
              
               class="mx-auto my-12"
-              max-width="374"
+              max-width="400"
             >
             <v-card-title>Completa la secuencia: </v-card-title>
             <v-divider class="mx-4"></v-divider>
             <v-card-text>
-              <button v-for="num in sequence" :key="num"  class="secuencia-button">
-          {{ num === hiddenNumber ? '?' : num }}
-        </button>
+              <div class="contenedor-numeros">
+              <div v-for="i in sequence" :key="i" class="numero">
+                <span v-if="i !== hiddenNumber ">
+                  {{ i }}
+                  <span class="flecha-contenedor">
+                    <span class="flecha-derecha">➡</span>
+                  </span>
+                </span>
+                <span v-else>
+                  <span class="numero-escondido">?</span>
+                    <span v-if="i === hiddenNumber" class="flecha-contenedor">
+                    <span class="flecha-derecha">➡</span>
+                    </span>
+                </span>
+              </div>
+            </div>
         <v-divider class="mx-4"></v-divider>
         <div class="text-center">
         Elige la opción correcta: <br>
@@ -43,6 +49,15 @@
           {{ option }}
         </button>
       </div>
+      <v-divider class="mx-4"></v-divider>
+          <!--Componente del boton de iniciar juego-->
+          <boton-iniciar 
+      :counting="!counting"
+      :texto="textoBoton"
+      @Iniciar="startCountdown"
+      :intentos="intentos"
+      :countdown="countdown"
+      />
       <v-divider class="mx-4"></v-divider>
       <div class="text-center">
         <span>
@@ -241,6 +256,36 @@
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
+
+.contenedor-numeros {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+  }
+
+  .numero {
+    font-size: 35px; 
+    padding: 5px;
+    margin: 0; 
+    white-space: nowrap; 
+  }
+
+  .numero-escondido {
+    font-size: 35px; /* Tamaño mediano */
+    border: 2px dashed rgb(116, 89, 89); /* Borde punteado para el número oculto */
+    padding: 2px;
+  }
+
+  .flecha-contenedor {
+    font-size: 25px; 
+    margin: 0 5px; 
+  }
+
+  .flecha-derecha {
+    color: rgba(33, 28, 173, 0.89); /* Color de las flechas */
+  }
+
 .secuencia-button {
   margin: 5px;
   padding: 10px;

@@ -12,7 +12,7 @@
       <template>
         <v-card
           class="mx-auto my-12"
-          max-width="374"
+          max-width="280"
         >
         <template slot="progress">
       <v-progress-linear
