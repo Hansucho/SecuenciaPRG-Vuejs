@@ -154,7 +154,7 @@
         this.timer = setInterval(() => {
           if ((this.countdown > 0) && (this.intentos>=0)) {
             this.countdown--;
-            console.log(this.intentos)
+            //console.log(this.intentos)
           } else {
             clearInterval(this.timer);
             this.counting = false;
